@@ -13,7 +13,7 @@ function App ()
       {
         !token ?
           <div>
-            <h1>Hello Vide Chat App</h1>
+            <h1>Hello Video Chat App</h1>
             Show From
             <Singin setToken={setToken} setName={setName} setRoom={setRoom} name={name} room={room}/>
           </div> :
