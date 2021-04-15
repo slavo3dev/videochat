@@ -7,6 +7,18 @@ export function VideoChat ( {token, room } )
     const localVideoRef = useRef()
     const remoteVideoRef = useRef()
 
+   function appendNewParticipant(track, identity) {
+    const chat = document.createElement('div');
+    chat.setAttribute('id', identity);
+    chat.appendChild(track.attach());
+    remoteVideoRef.current.appendChild(chat);
+  }
+
+    function removeParticipant(participant){
+        const elementId = document.getElementsById( participant.identity )
+        elementId.parentNode.removeChild(elementId)
+    }
+
     useEffect(() =>
     {
         //effect 
@@ -17,19 +29,28 @@ export function VideoChat ( {token, room } )
         } ).then( ( room ) =>
         {
             TwilioVideo.createLocalVideoTrack().then((track ) => {
-                    localVideoRef.current.appendChild( track.attach() );
-                });
+                    localVideoRef.current.appendChild(track.attach());
+            } );
+            
+            function removeParticipant(participant) {
+                    const elementId = document.getElementById(participant.identity);
+                    elementId.parentNode.removeChild(elementId);
+            }
+            
             function addParticipant (participant){
-                console.log( "New Participant" )
-                participant.tracks.forEach( publication => {
-                    if (publication.subsribe){
-                        const track = publication.track
-                        remoteVideoRef.current.appendChild( track.attach())
+                participant.tracks.forEach((publication) => {
+                    if (publication.isSubscribed){
+                        const track = publication.track;
+                        appendNewParticipant(track, participant.identity);
                     }
+                } )
+                participant.on('trackSubscribed',(track) =>{
+                    appendNewParticipant(track, participant.identity);
                 })
             }
-            room.participants.forEach(addParticipant)
+            room.participants.forEach(addParticipant);
             room.on('participantConnected', addParticipant)
+            room.on('participantDisconnected', removeParticipant)
         } ).catch( (err) => console.log("Error Messge: ", err) )
         //clean up function
         // return () => {}
