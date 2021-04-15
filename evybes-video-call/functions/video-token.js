@@ -10,7 +10,9 @@ exports.handler = function (context, event, callback) {
     TWILIO_API_SECRET
   );
     
-    const VideoGrant = AccessToken.VideoGrant()
+    accessToken.identity = event.identity;
+    
+    const VideoGrant = AccessToken.VideoGrant;
     const videoGrant = new VideoGrant( {
         room: event.room
     } )
