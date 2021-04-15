@@ -19,7 +19,7 @@
 		"build:twilio": "react-scripts build && mv build/* ../evybes-video-call/assets || move build/* ../evybes-video-call/assets",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"clean": "del ../evybes-video-call/assets/**/*.* --force"
+		"clean": "del ../evybes-video-call/assets/**/* --force"
 	},
 	"eslintConfig": {
 		"extends": [
