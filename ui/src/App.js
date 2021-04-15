@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import './App.css';
-import { Singin } from "./components/Signin"
+import {Singin} from "./components/Signin"
+import {VideoChat} from "./components/VideoChat"
 
 function App ()
 {
+   const [name,setName] = useState("")
+    const [room,setRoom] = useState( "room" )
   const [token, setToken] = useState()
   return (
     <div className="App">
@@ -12,11 +15,9 @@ function App ()
           <div>
             <h1>Hello Vide Chat App</h1>
             Show From
-            <Singin />
+            <Singin setToken={setToken} setName={setName} setRoom={setRoom} name={name} room={room}/>
           </div> :
-          <div>
-            Hello From Twilio
-          </div>
+          <VideoChat token={token} room={room}/>
       }
     </div>
   );
